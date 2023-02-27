@@ -5,22 +5,39 @@ using namespace std;
 
 int sum_stub(int lhs, int rhs);
 
-enum HumanState
+enum HumanType
 {
 	schooler,
 	student,
 	retire
 };
 
-class human 
+enum Flag // belonging to a large family(schooler)
 {
+	No,
+	Yes
+};
+
+class Human
+{
+
 public:
 
-	string flname;
-	string schoolname;
-	int ticket_number;
+	// general
+	HumanType Type;
+	string FLname;
 
-private:
+	// schooler
+	string school;
+	int TicketNumber;
+	Flag flag;
 
-	HumanState State;
+	// student
+	string university;
+	int StudentID;
+	double AverageScore;
+
+	// retire
+	int IDcard;
+	int experience;
 };
