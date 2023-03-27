@@ -24,6 +24,7 @@ private:
 	int experience;
 public:
 	// constructors:
+	Human(); // default
 	Human(HumanType type, string name, string educational_institution, int ticket, bool is_large_family); // for schooler
 	Human(HumanType type, string name, string educational_institution, int book, double score); // for student
 	Human(HumanType type, string name, int retire_id, int experience); // for retire
@@ -65,11 +66,17 @@ private:
 	int size;
 public:
 	// constructors:
+	HumanList(); // default
 	HumanList(Human person[], int size); // schooler
-	HumanList(Human person[], int size); // student
-	HumanList(Human person[], int size); // retire
+	HumanList(Human person[], int size, float); // student
+	HumanList(Human person[], int size, int); // retire
+
+	Human get_human_by_index(int i);
 	int get_size();
 	void set_size(int size);
-
-
+	Human operator[](int ind) const;
+	Human& operator[](int ind);
+	void add_human(int ind, Human citizen);
+	void del_human(int ind);
+	void clear();
 };

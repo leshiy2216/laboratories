@@ -1,6 +1,7 @@
 #include <functions/functions.h>
 #include <iostream>
 #include <string>
+#include <stdexcept>
 #define MINSIZE 16242
 using namespace std;
 
@@ -100,6 +101,15 @@ int Human::get_experience()
 
 // constructors:
 
+Human::Human()
+{
+	type = STUDENT;
+	name = "Sergey";
+	educational_institution = "1488 VUZ";
+	book = 232;
+	score = 3.5;
+}
+
 Human::Human(HumanType type, string name, string educational_institution, int ticket, bool is_large_family) // schooler
 {
 	this->type = type;
@@ -153,16 +163,110 @@ double Human::payday_for_retire()
 	if (experience > 20 and experience <= 30) return 4 * MINSIZE;
 }
 
+// for 2nd class
 
-/*TODO
-HumanList::HumanList(Human person[], int size)
+HumanList::HumanList() // default
 {
-
+	this->size = 7;
+	for (int i = 0; i < size; ++i) person[i] = Human();
 }
 
-void HumanList::add_person()
+HumanList:HumanList(Human person[], int size) // schooler
 {
-	persons[size] = person;
+	this->size = size;
+	
+	for (int i = 0; i < size; ++i)
+	{
+		this->persons[i].set_type(person[i].get_type());
+		this->persons[i].set_name(person[i].get_name());
+		this->persons[i].set_educational_institution(person[i].get_educational_institution());
+		this->persons[i].set_ticket(person[i].get_ticket());
+		this->persons[i].set_is_large_family(person[i].get_is_large_family());
+	}
+}
+
+HumanList:HumanList(Human person[], int size, float) // student
+{
+	this->size = size;
+
+	for (int i = 0; i < size; ++i)
+	{
+		this->persons[i].set_type(person[i].get_type());
+		this->persons[i].set_name(person[i].get_name());
+		this->persons[i].set_educational_institution(person[i].get_educational_institution());
+		this->persons[i].set_book(person[i].get_book());
+		this->persons[i].set_score(person[i].get_score());
+	}
+}
+
+HumanList:HumanList(Human person[], int size) // retire
+{
+	this->size = size;
+
+	for (int i = 0; i < size; ++i)
+	{
+		this->persons[i].set_type(person[i].get_type());
+		this->persons[i].set_name(person[i].get_name());
+		this->persons[i].set_retire_id(person[i].get_retire_id());
+		this->persons[i].set_experience(person[i].get_experience());
+	}
+}
+
+Human HumanList::get_human_by_index(int i)
+{
+	return persons[i];
+}
+
+int HumanList::get_size()
+{
+	return size;
+}
+
+void HumanList::set_size(int size)
+{
+	this->size = size;
+}
+
+Human& HumanList::operator[int index]
+{
+	if ((index < 0) or (index >= size))
+	{
+		throw std::runtime_error("Index out of range.");
+	}
+	return persons[index];
+}
+
+void HumanList::add_human(int index, Human person)
+{
+	if (size == CAPACITY)
+	{
+		throw std::runtime_error("The data array is full.");
+	}
+
+	if ((index < 0) or (index >= size))
+	{
+		throw std::runtime_error("Index out of range.");
+	}
+
+	for (int i = size - 1; i >= index; --i) { persons[i] = persons[i - 1]; }
+	persons[index] = person;
 	++size;
 }
-*/
+
+void HumanList::clear()
+{
+	size = 0;
+}
+
+void HumanList::del_human(int index)
+{
+	if (size <= 0)
+	{
+		throw std::runtime_error("List of Citizen is empty.");
+	}
+	for (int i = index; i < size - 1; ++i)
+	{
+		persons[i] = persons[i + 1];
+	}
+	--size;
+}
