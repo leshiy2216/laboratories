@@ -111,15 +111,19 @@ Human::Human()
 	score = 3.5;
 }
 
-Human::Human(HumanType type, string name, string educational_institution, int ticket, bool is_large_family) // schooler
+Human::Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience) // schooler
 {
 	this->type = type;
 	this->name = name;
 	this->educational_institution = educational_institution;
 	this->ticket = ticket;
+	this->book = book;
 	this->is_large_family = is_large_family;
+	this->score = score;
+	this->retire_id = retire_id;
+	this->experience = experience;
 }
-
+/*
 Human::Human(HumanType type, string name, string educational_institution, int book, double score) // student
 {
 	this->type = type;
@@ -135,7 +139,7 @@ Human::Human(HumanType type, string name, int retire_id, int experience) // reti
 	this->name = name;
 	this->retire_id = retire_id;
 	this->experience = experience;
-}
+}*/
 
 // calculations:
 

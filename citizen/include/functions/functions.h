@@ -27,9 +27,9 @@ namespace peoples
 	public:
 		// constructors:
 		Human(); // default
-		Human(HumanType type, string name, string educational_institution, int ticket, bool is_large_family); // for schooler
-		Human(int, HumanType type, string name, string educational_institution, int book, double score); // for student
-		Human(double, HumanType type, string name, int retire_id, int experience); // for retire
+		Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience); // for schooler
+		/*Human(int, HumanType type, string name, string educational_institution, int book, double score); // for student
+		Human(double, HumanType type, string name, int retire_id, int experience); // for retire*/
 
 		// calculations paydays:
 		double payday_for_schooler();
