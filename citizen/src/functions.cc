@@ -4,6 +4,7 @@
 #include <stdexcept>
 #define MINSIZE 16242
 using namespace std;
+using namespace peoples;
 
 // set & get:
 
@@ -128,7 +129,7 @@ Human::Human(HumanType type, string name, string educational_institution, int bo
 	this->score = score;
 }
 
-Human::Human(HumanType type, string name, int retire_id, int experience)
+Human::Human(HumanType type, string name, int retire_id, int experience) // retire
 {
 	this->type = type;
 	this->name = name;
@@ -165,108 +166,86 @@ double Human::payday_for_retire()
 
 // for 2nd class
 
-HumanList::HumanList() // default
+HumanList::HumanList() // standard
 {
-	this->size = 7;
-	for (int i = 0; i < size; ++i) person[i] = Human();
+	this->_size = 9;
+	for (int i = 0; i < 9; i++) this->_person[i] = Human();
 }
 
-HumanList:HumanList(Human person[], int size) // schooler
+HumanList::HumanList(Human _person[], int _size) // schooler
 {
-	this->size = size;
+	this->_size = _size;
 	
-	for (int i = 0; i < size; ++i)
+	for (int i = 0; i <= _size; i++)
 	{
-		this->persons[i].set_type(person[i].get_type());
-		this->persons[i].set_name(person[i].get_name());
-		this->persons[i].set_educational_institution(person[i].get_educational_institution());
-		this->persons[i].set_ticket(person[i].get_ticket());
-		this->persons[i].set_is_large_family(person[i].get_is_large_family());
+		this->_person[i].set_type(_person[i].get_type());
+		this->_person[i].set_name(_person[i].get_name());
+		this->_person[i].set_educational_institution(_person[i].get_educational_institution());
+		this->_person[i].set_ticket(_person[i].get_ticket());
+		this->_person[i].set_is_large_family(_person[i].get_is_large_family());
 	}
 }
 
-HumanList:HumanList(Human person[], int size, float) // student
+HumanList::HumanList(Human _person[], int _size, float) // student
 {
-	this->size = size;
+	this->_size = _size;
 
-	for (int i = 0; i < size; ++i)
+	for (int i = 0; i <= _size; i++)
 	{
-		this->persons[i].set_type(person[i].get_type());
-		this->persons[i].set_name(person[i].get_name());
-		this->persons[i].set_educational_institution(person[i].get_educational_institution());
-		this->persons[i].set_book(person[i].get_book());
-		this->persons[i].set_score(person[i].get_score());
+		this->_person[i].set_type(_person[i].get_type());
+		this->_person[i].set_name(_person[i].get_name());
+		this->_person[i].set_educational_institution(_person[i].get_educational_institution());
+		this->_person[i].set_book(_person[i].get_book());
+		this->_person[i].set_score(_person[i].get_score());
 	}
 }
 
-HumanList:HumanList(Human person[], int size) // retire
+HumanList::HumanList(Human _person[], int _size, double) // retire
 {
-	this->size = size;
+	this->_size = _size;
 
-	for (int i = 0; i < size; ++i)
+	for (int i = 0; i <+ _size; i++)
 	{
-		this->persons[i].set_type(person[i].get_type());
-		this->persons[i].set_name(person[i].get_name());
-		this->persons[i].set_retire_id(person[i].get_retire_id());
-		this->persons[i].set_experience(person[i].get_experience());
+		this->_person[i].set_type(_person[i].get_type());
+		this->_person[i].set_name(_person[i].get_name());
+		this->_person[i].set_retire_id(_person[i].get_retire_id());
+		this->_person[i].set_experience(_person[i].get_experience());
 	}
 }
 
-Human HumanList::get_human_by_index(int i)
+void HumanList::insert(int index, Human f)
 {
-	return persons[i];
-}
-
-int HumanList::get_size()
-{
-	return size;
-}
-
-void HumanList::set_size(int size)
-{
-	this->size = size;
-}
-
-Human& HumanList::operator[int index]
-{
-	if ((index < 0) or (index >= size))
+	if ((index >= CAPACITY) or (index < 0))
 	{
-		throw std::runtime_error("Index out of range.");
-	}
-	return persons[index];
-}
-
-void HumanList::add_human(int index, Human person)
-{
-	if (size == CAPACITY)
-	{
-		throw std::runtime_error("The data array is full.");
+		throw runtime_error("error 1");
 	}
 
-	if ((index < 0) or (index >= size))
+	for (int i = _size - 1; i >= index; --i)
 	{
-		throw std::runtime_error("Index out of range.");
-	}
-
-	for (int i = size - 1; i >= index; --i) { persons[i] = persons[i - 1]; }
-	persons[index] = person;
-	++size;
+		_person[i] = _person[i - 1];
+	} ++_size;
+	_person[index] = f;
 }
 
-void HumanList::clear()
+void HumanList::remove(int index)
 {
-	size = 0;
+	if ((index >= CAPACITY) or (index < 0))
+	{
+		throw runtime_error("error 1");
+	}
+
+	for (int i = index; i < _size - 1; ++i)
+	{
+		_person[i] = _person[i + 1];
+	} --_size;
 }
 
-void HumanList::del_human(int index)
+Human& HumanList::operator[](int index)
 {
-	if (size <= 0)
+	if ((index >= CAPACITY) or (index < 0))
 	{
-		throw std::runtime_error("List of Citizen is empty.");
+		throw runtime_error("error 1");
 	}
-	for (int i = index; i < size - 1; ++i)
-	{
-		persons[i] = persons[i + 1];
-	}
-	--size;
+
+	return _person[index];
 }
