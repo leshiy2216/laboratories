@@ -30,11 +30,13 @@ namespace peoples
 		Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience); // for schooler
 		/*Human(int, HumanType type, string name, string educational_institution, int book, double score); // for student
 		Human(double, HumanType type, string name, int retire_id, int experience); // for retire*/
+		//Human(const Human& person);
 
 		// calculations paydays:
 		double payday_for_schooler();
 		double payday_for_student();
 		double payday_for_retire();
+		double payday_for_all(HumanType type);
 
 		// set & get:
 		void set_type(HumanType type);
@@ -70,8 +72,9 @@ namespace peoples
 		// constructors:
 		HumanList(); // standard
 		HumanList(Human _person[], int _size); // schooler
+		/*
 		HumanList(Human _person[], int _size, float); // student
-		HumanList(Human _person[], int _size, double); // retire
+		HumanList(Human _person[], int _size, double); // retire*/
 
 		int size() const;
 		void insert(int index, Human f);

@@ -108,8 +108,17 @@ Human::Human()
 	name = "Sergey";
 	educational_institution = "1488 VUZ";
 	book = 232;
-	score = 3.5;
+	score = 4.9;
 }
+/*
+Human::Human(const Human& person)
+{
+	type = person.type;
+	name = person.name;
+	educational_institution = person.educational_institution;
+	book = person.book;
+	score = person.score;
+}*/
 
 Human::Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience) // schooler
 {
@@ -168,12 +177,38 @@ double Human::payday_for_retire()
 	if (experience > 20 and experience <= 30) return 4 * MINSIZE;
 }
 
+double Human::payday_for_all(HumanType type)
+{
+	switch (type)
+	{
+	case SCHOOLER:
+		if (is_large_family) return 0.5 * MINSIZE;
+		if (is_large_family = 0) return 0;
+		break;
+	case STUDENT:
+		if (score < 3.5) return 0;
+		if (score >= 3.5 and score < 4) return 0.5 * MINSIZE;
+		if (score >= 4 and score < 4.5) return 0.6 * MINSIZE;
+		if (score >= 4.5 and score < 5) return 0.7 * MINSIZE;
+		if (score == 5) return 0.8 * MINSIZE;
+		break;
+	case RETIRE:
+		if (experience < 5) return 0;
+		if (experience > 30) return 5 * MINSIZE;
+		if (experience == 5) return MINSIZE;
+		if (experience > 5 and experience <= 10) return 2 * MINSIZE;
+		if (experience > 10 and experience <= 20) return 3 * MINSIZE;
+		if (experience > 20 and experience <= 30) return 4 * MINSIZE;
+		break;
+	}
+}
+
 // for 2nd class
 
 HumanList::HumanList() // standard
 {
 	this->_size = 9;
-	for (int i = 0; i < 9; i++) this->_person[i] = Human();
+	for (int i = 0; i < 9; i++) _person[i] = Human();
 }
 
 HumanList::HumanList(Human _person[], int _size) // schooler
@@ -189,7 +224,7 @@ HumanList::HumanList(Human _person[], int _size) // schooler
 		this->_person[i].set_is_large_family(_person[i].get_is_large_family());
 	}
 }
-
+/*
 HumanList::HumanList(Human _person[], int _size, float) // student
 {
 	this->_size = _size;
@@ -215,7 +250,7 @@ HumanList::HumanList(Human _person[], int _size, double) // retire
 		this->_person[i].set_retire_id(_person[i].get_retire_id());
 		this->_person[i].set_experience(_person[i].get_experience());
 	}
-}
+}*/
 
 void HumanList::insert(int index, Human f)
 {
