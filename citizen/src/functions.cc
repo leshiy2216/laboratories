@@ -2,7 +2,11 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <istream>
+#include <ostream>
+#include <math.h>
 #define MINSIZE 16242
+#define SIZE 4
 using namespace std;
 using namespace peoples;
 
@@ -48,7 +52,7 @@ void Human::set_retire_id(int retire_id)
 	this->retire_id = retire_id;
 }
 
-void Human::set_experience(int experrience)
+void Human::set_experience(int experience)
 {
 	this->experience = experience;
 }
@@ -110,17 +114,8 @@ Human::Human()
 	book = 232;
 	score = 4.9;
 }
-/*
-Human::Human(const Human& person)
-{
-	type = person.type;
-	name = person.name;
-	educational_institution = person.educational_institution;
-	book = person.book;
-	score = person.score;
-}*/
 
-Human::Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience) // schooler
+Human::Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience) // something class
 {
 	this->type = type;
 	this->name = name;
@@ -132,23 +127,6 @@ Human::Human(HumanType type, string name, string educational_institution, int ti
 	this->retire_id = retire_id;
 	this->experience = experience;
 }
-/*
-Human::Human(HumanType type, string name, string educational_institution, int book, double score) // student
-{
-	this->type = type;
-	this->name = name;
-	this->educational_institution = educational_institution;
-	this->book = book;
-	this->score = score;
-}
-
-Human::Human(HumanType type, string name, int retire_id, int experience) // retire
-{
-	this->type = type;
-	this->name = name;
-	this->retire_id = retire_id;
-	this->experience = experience;
-}*/
 
 // calculations:
 
@@ -203,88 +181,134 @@ double Human::payday_for_all(HumanType type)
 	}
 }
 
-// for 2nd class
+// operators::
 
-HumanList::HumanList() // standard
+// 2nd class
+
+HumanList::HumanList()
 {
-	this->_size = 9;
-	for (int i = 0; i < 9; i++) _person[i] = Human();
+	capacity = 10; // default size - 10 elements
+	size = 0; // now we not have elements
+	humans = new Human * [capacity]; // allocating memory for an array of pointers
 }
 
-HumanList::HumanList(Human _person[], int _size) // schooler
+HumanList::~HumanList()
 {
-	this->_size = _size;
-	
-	for (int i = 0; i <= _size; i++)
+	// delete all elements of array
+	for (int i = 0; i < size; i++)
 	{
-		this->_person[i].set_type(_person[i].get_type());
-		this->_person[i].set_name(_person[i].get_name());
-		this->_person[i].set_educational_institution(_person[i].get_educational_institution());
-		this->_person[i].set_ticket(_person[i].get_ticket());
-		this->_person[i].set_is_large_family(_person[i].get_is_large_family());
+		delete humans[i];
 	}
-}
-/*
-HumanList::HumanList(Human _person[], int _size, float) // student
-{
-	this->_size = _size;
-
-	for (int i = 0; i <= _size; i++)
-	{
-		this->_person[i].set_type(_person[i].get_type());
-		this->_person[i].set_name(_person[i].get_name());
-		this->_person[i].set_educational_institution(_person[i].get_educational_institution());
-		this->_person[i].set_book(_person[i].get_book());
-		this->_person[i].set_score(_person[i].get_score());
-	}
+	// delete array
+	delete[] humans;
 }
 
-HumanList::HumanList(Human _person[], int _size, double) // retire
+void HumanList::insert(Human* human)
 {
-	this->_size = _size;
-
-	for (int i = 0; i <+ _size; i++)
+	if (size >= capacity)
 	{
-		this->_person[i].set_type(_person[i].get_type());
-		this->_person[i].set_name(_person[i].get_name());
-		this->_person[i].set_retire_id(_person[i].get_retire_id());
-		this->_person[i].set_experience(_person[i].get_experience());
+		// doubling the capacity of the array
+		capacity *= 2;
+		Human** new_humans = new Human * [capacity];
+		// copy elements from old array in new array
+		for (int i = 0; i < size; i++)
+		{
+			new_humans[i] = humans[i];
+		}
+		// delete old array
+		delete[] humans;
+		// assign a new array of pointers to humans
+		humans = new_humans;
 	}
-}*/
-
-void HumanList::insert(int index, Human f)
-{
-	if ((index >= CAPACITY) or (index < 0))
-	{
-		throw runtime_error("error 1");
-	}
-
-	for (int i = _size - 1; i >= index; --i)
-	{
-		_person[i] = _person[i - 1];
-	} ++_size;
-	_person[index] = f;
+	// add element to end of array
+	humans[size] = human;
+	size++;
 }
 
 void HumanList::remove(int index)
 {
-	if ((index >= CAPACITY) or (index < 0))
+	if (index >= 0 && index < size)
 	{
-		throw runtime_error("error 1");
+		// delete elemet with appropriate index
+		delete humans[index];
+		// shift all elements after the removed one position to the left
+		for (int i = 0; i < size - 1; i++)
+		{
+			humans[i] = humans[i + 1];
+		}
+		// decrease the number of elements in the array
+		size--;
 	}
-
-	for (int i = index; i < _size - 1; ++i)
-	{
-		_person[i] = _person[i + 1];
-	} --_size;
 }
 
-Human& HumanList::operator[](int index)
+void Human::print_info()
 {
-	if ((index >= CAPACITY) or (index < 0))
+	cout << "Type: ";
+	switch (type)
 	{
-		throw runtime_error("error 1");
-	}
+	case SCHOOLER:
+		cout << "Schooler\n";
+		cout << "Name: " << name << "\n";
+		cout << "Educational institution: " << educational_institution << "\n";
+		cout << "Ticket: " << ticket << "\n";
+		cout << "Is large family: " << is_large_family << "\n";
+		break;
 
-	return _person[index];
+	case STUDENT:
+		cout << "Student\n";
+		cout << "Name: " << name << "\n";
+		cout << "Educational institution: " << educational_institution << "\n";
+		cout << "Book: " << book << "\n";
+		cout << "Score: " << score << "\n";
+		break;
+
+	case RETIRE:
+		cout << "Retire\n";
+		cout << "Name: " << name << "\n";
+		cout << "Retire ID: " << retire_id << "\n";
+		cout << "Experience: " << experience << "\n";
+		break;
+	default:
+		cout << "Invalid type\n";
+		break;
+	}
+}
+
+void HumanList::print_list(int size)
+{
+	if (size == 0)
+	{
+		cout << "List is empty!" << endl;
+	}
+	else
+	{
+		for (int i = 0; i < size; i++)
+		{
+			cout << "Human " << i + 1 << ":" << endl;
+			humans[i]->print_info();
+		}
+	}
+}
+
+double HumanList::search_max_payday(Human** list, int size)
+{
+	double max_payday = 0;
+	for (int i = 0; i < size; i++)
+	{
+		switch (list[i]->get_type())
+		{
+		case SCHOOLER:
+			if (list[i]->payday_for_schooler() > max_payday) max_payday = list[i]->payday_for_schooler();
+			break;
+
+		case STUDENT:
+			if(list[i]->payday_for_student() > max_payday) max_payday = list[i]->payday_for_student();
+			break;
+
+		case RETIRE:
+			if(list[i]->payday_for_retire() > max_payday) max_payday = list[i]->payday_for_retire();
+			break;
+		}
+	}
+	return max_payday;
 }

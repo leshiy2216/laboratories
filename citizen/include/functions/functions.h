@@ -12,6 +12,7 @@ namespace peoples
 		RETIRE
 	};
 
+
 	class Human
 	{
 	private:
@@ -25,12 +26,10 @@ namespace peoples
 		int retire_id;
 		int experience;
 	public:
-		// constructors:
-		Human(); // default
-		Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience); // for schooler
-		/*Human(int, HumanType type, string name, string educational_institution, int book, double score); // for student
-		Human(double, HumanType type, string name, int retire_id, int experience); // for retire*/
-		//Human(const Human& person);
+		// constructors & destructors:
+		Human(); // standard constructor
+		Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience); // something class constructor
+		
 
 		// calculations paydays:
 		double payday_for_schooler();
@@ -60,25 +59,27 @@ namespace peoples
 		double get_score();
 		int get_retire_id();
 		int get_experience();
+
+		// methods:
+		void print_info();
 	};
 
 	class HumanList
 	{
 	private:
-		static const int CAPACITY = 10;
-		Human _person[CAPACITY];
-		int _size;
+		Human** humans;
+		int capacity; // max size of array
+		int size; // current size of array
 	public:
-		// constructors:
-		HumanList(); // standard
-		HumanList(Human _person[], int _size); // schooler
-		/*
-		HumanList(Human _person[], int _size, float); // student
-		HumanList(Human _person[], int _size, double); // retire*/
 
-		int size() const;
-		void insert(int index, Human f);
-		void remove(int index);
-		Human& operator[](int index);
+		// constructors & destructor:
+		HumanList(); // standard constructor
+		~HumanList(); // destructor
+
+		// methods:
+		void insert(Human* human); // input element
+		void remove(int index); // delete element
+		void print_list(int size); // print list
+		double search_max_payday(Human** list, int size);
 	};
 }

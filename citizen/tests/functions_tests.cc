@@ -131,23 +131,3 @@ TEST(RandomHuman, payday) // 16
 	EXPECT_EQ(r, 11369.4);
 	EXPECT_EQ(r2, 81210);
 }
-
-// remove & insert
-
-TEST(RemoveAndInsert, removeInsert) // 17
-{
-	Human l = Human(SCHOOLER, "Tolya", "44sc", 1488, 0, 1, 0, 0, 0);
-	HumanList n = HumanList();
-	n.insert(2, l);
-	n.remove(1);
-
-	EXPECT_EQ(n[1].get_type(), l.get_type());
-
-}
-
-TEST(CopyConstr, copy) // 18
-{
-	Human Sergey1 = Human();
-	Human Sergey2 = Human(Sergey1);
-	EXPECT_EQ(Sergey1.get_name(), Sergey2.get_name());
-}

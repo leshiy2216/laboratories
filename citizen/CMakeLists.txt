@@ -31,5 +31,6 @@ FetchContent_MakeAvailable(googletest)
 add_executable(functions_tests "tests/functions_tests.cc")
 target_link_libraries(functions_tests functions GTest::gtest_main)
 
+# Добавляем консоль
 add_executable(console "src/console.cc")
 target_link_libraries(console functions)
