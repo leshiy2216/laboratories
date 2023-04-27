@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include <istream>
-#include <ostream>
+#include<utility>
+#include<cmath>
 #include <math.h>
 #define MINSIZE 16242
 #define SIZE 4
@@ -106,14 +106,7 @@ int Human::get_experience()
 
 // constructors:
 
-Human::Human()
-{
-	type = STUDENT;
-	name = "Sergey";
-	educational_institution = "1488 VUZ";
-	book = 232;
-	score = 4.9;
-}
+
 
 Human::Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience) // something class
 {
@@ -185,130 +178,128 @@ double Human::payday_for_all(HumanType type)
 
 // 2nd class
 
-HumanList::HumanList()
+Human& HumanList::operator[](const int index)
 {
-	capacity = 10; // default size - 10 elements
-	size = 0; // now we not have elements
-	humans = new Human * [capacity]; // allocating memory for an array of pointers
+	if (index >= _size)
+		throw runtime_error("Index out of range");
+	return _ptr[index][0];
+}
+
+void HumanList::clear() noexcept
+{
+	for (int i = 0; i < _size; ++i)
+		delete[] _ptr;
+	_ptr = nullptr;
+	_size = 0;
 }
 
 HumanList::~HumanList()
 {
-	// delete all elements of array
-	for (int i = 0; i < size; i++)
-	{
-		delete humans[i];
-	}
-	// delete array
-	delete[] humans;
+	clear();
 }
 
-void HumanList::insert(Human* human)
+HumanList::HumanList(const HumanList& list) :
+	_ptr(new Human_ptr[list._size]),
+	_size(list._size)
 {
-	if (size >= capacity)
+	for (int i = 0; i < _size; ++i)
 	{
-		// doubling the capacity of the array
-		capacity *= 2;
-		Human** new_humans = new Human * [capacity];
-		// copy elements from old array in new array
-		for (int i = 0; i < size; i++)
+		_ptr[i] = new Human(*list._ptr[i]);
+	}
+}
+
+void HumanList::Swap(HumanList& cpy) noexcept
+{
+	swap(_ptr, cpy._ptr);
+	swap(_size, cpy._size);
+}
+
+HumanList& HumanList::operator=(const HumanList& list)
+{
+	HumanList _copy(list);
+	Swap(_copy);
+	return *this;
+}
+
+void HumanList::add(Human item)
+{
+	Human_ptr* ptr = new Human * [_size + 1];
+	for (int i = 0; i < _size; i++)
+	{
+		ptr[i] = new Human;
+		*ptr[i] = *this->_ptr[i];
+	}
+	delete[] _ptr;
+
+	_ptr = ptr;
+	_ptr[_size] = new Human;
+	*_ptr[_size] = item;
+	++_size;
+}
+
+void HumanList::add(Human item, int index)
+{
+	if (index < 0) throw runtime_error("Wrong index");
+	Human_ptr* ptr = new Human * [_size + 1];
+	for (int i = 0; i < index; i++)
+	{
+		ptr[i] = new Human();
+		*ptr[i] = *this->_ptr[i];
+	}
+	ptr[index] = new Human();
+	*ptr[index] = item;
+	for (int i = 0; i > index && i < _size + 1; i++)
+	{
+		ptr[i] = new Human;
+		*ptr[i] = *this->_ptr[i - 1];
+	}
+	delete[] _ptr;
+	_ptr = ptr;
+	++_size;
+}
+
+void HumanList::Del(int index)
+{
+	for (int i = index; i < _size - 1; i++)
+	{
+		_ptr[i] = _ptr[i + 1];
+	}
+	auto ptr = new Human * [_size - 1];
+	--_size;
+	for (int i = 0; i < _size; i++)
+	{
+		ptr[i] = _ptr[i];
+	}
+	delete[] _ptr;
+	_ptr = ptr;
+}
+
+void HumanList::Print()
+{
+	for (int i = 0; i < _size; i++)
+	{
+		if (_ptr[i]->get_type() == SCHOOLER)
 		{
-			new_humans[i] = humans[i];
+			cout << "schooler" << endl;
+			cout << "name: " << _ptr[i]->get_name() << endl;
+			cout << "shool " << _ptr[i]->get_educational_institution() << endl;
+			cout << "ticket " << _ptr[i]->get_ticket() << endl;
+			cout << "family " << _ptr[i]->get_is_large_family() << endl;
 		}
-		// delete old array
-		delete[] humans;
-		// assign a new array of pointers to humans
-		humans = new_humans;
-	}
-	// add element to end of array
-	humans[size] = human;
-	size++;
-}
-
-void HumanList::remove(int index)
-{
-	if (index >= 0 && index < size)
-	{
-		// delete elemet with appropriate index
-		delete humans[index];
-		// shift all elements after the removed one position to the left
-		for (int i = 0; i < size - 1; i++)
+		if (_ptr[i]->get_type() == STUDENT)
 		{
-			humans[i] = humans[i + 1];
+			cout << "student" << endl;
+			cout << "name: " << _ptr[i]->get_name() << endl;
+			cout << "university " << _ptr[i]->get_educational_institution() << endl;
+			cout << "book " << _ptr[i]->get_book() << endl;
+			cout << "score " << _ptr[i]->get_score() << endl;
 		}
-		// decrease the number of elements in the array
-		size--;
-	}
-}
-
-void Human::print_info()
-{
-	cout << "Type: ";
-	switch (type)
-	{
-	case SCHOOLER:
-		cout << "Schooler\n";
-		cout << "Name: " << name << "\n";
-		cout << "Educational institution: " << educational_institution << "\n";
-		cout << "Ticket: " << ticket << "\n";
-		cout << "Is large family: " << is_large_family << "\n";
-		break;
-
-	case STUDENT:
-		cout << "Student\n";
-		cout << "Name: " << name << "\n";
-		cout << "Educational institution: " << educational_institution << "\n";
-		cout << "Book: " << book << "\n";
-		cout << "Score: " << score << "\n";
-		break;
-
-	case RETIRE:
-		cout << "Retire\n";
-		cout << "Name: " << name << "\n";
-		cout << "Retire ID: " << retire_id << "\n";
-		cout << "Experience: " << experience << "\n";
-		break;
-	default:
-		cout << "Invalid type\n";
-		break;
-	}
-}
-
-void HumanList::print_list(int size)
-{
-	if (size == 0)
-	{
-		cout << "List is empty!" << endl;
-	}
-	else
-	{
-		for (int i = 0; i < size; i++)
+		if (_ptr[i]->get_type() == RETIRE)
 		{
-			cout << "Human " << i + 1 << ":" << endl;
-			humans[i]->print_info();
-		}
-	}
-}
-
-double HumanList::search_max_payday(Human** list, int size)
-{
-	double max_payday = 0;
-	for (int i = 0; i < size; i++)
-	{
-		switch (list[i]->get_type())
-		{
-		case SCHOOLER:
-			if (list[i]->payday_for_schooler() > max_payday) max_payday = list[i]->payday_for_schooler();
-			break;
-
-		case STUDENT:
-			if(list[i]->payday_for_student() > max_payday) max_payday = list[i]->payday_for_student();
-			break;
-
-		case RETIRE:
-			if(list[i]->payday_for_retire() > max_payday) max_payday = list[i]->payday_for_retire();
-			break;
+			cout << "retire" << endl;
+			cout << "name: " << _ptr[i]->get_name() << endl;
+			cout << "id " << _ptr[i]->get_retire_id() << endl;
+			cout << "exp " << _ptr[i]->get_experience() << endl;
 		}
 	}
-	return max_payday;
 }

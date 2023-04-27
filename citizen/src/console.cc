@@ -2,127 +2,109 @@
 #include <functions/functions.h>
 #include <conio.h>
 #include <list>
+#include <vector>
 using namespace std;
 using namespace peoples;
 
-int main() {
-    HumanList humans;
-    int choice;
-    int index;
-    Human human;
-    int typeChoice;
-    string name;
-    string schoolORuniversity;
-    int ticket;
-    bool family;
-    int book;
-    double score;
-    int id;
-    int experience;
 
-    do {
-        cout << "Menu:" << endl;
-        cout << "1. Insert element" << endl;
-        cout << "2. Delete element" << endl;
-        cout << "3. Print list" << endl;
-        cout << "4. Search for element" << endl;
-        cout << "5. Exit" << endl;
-        cout << "Enter your choice: ";
-        std::cin >> choice;
-        system("cls");
+int main()
+{
+	HumanList humans;
+	int choice = -1;
+	int type;
+	int index;
+	Human human;
+	string name;
+	string schoolORuniversity;
+	int ticket;
+	bool family;
+	int book;
+	double score;
+	int id;
+	int experience;
+	do
+	{
+		cout << "Menu:" << endl;
+		cout << "0. EXIT" << endl;
+		cout << "1. input" << endl;
+		cout << "2. del" << endl;
+		cout << "3. print" << endl;
+		int choice;
+		cout << "what do7" << endl;
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+		{
+			Human human;
+			cout << "index" << endl;
+			cin >> index;
+			cout << "choose type:" << endl;
+			cout << "1. schooler / 2. student / 3. retire" << endl;
+			cin >> type;
+			if (type == 1)
+			{
+				human.set_type(SCHOOLER);
+				cout << "name" << endl;
+				cin >> name;
+				human.set_name(name);
+				cout << "school" << endl;
+				cin >> schoolORuniversity;
+				human.set_educational_institution(schoolORuniversity);
+				cout << "ticket" << endl;
+				cin >> ticket;
+				human.set_ticket(ticket);
+				cout << "family" << endl;
+				cin >> family;
+				human.set_is_large_family(family);
+			}
+			else if (type == 2)
+			{
+				human.set_type(STUDENT);
+				cout << "name" << endl;
+				cin >> name;
+				human.set_name(name);
+				cout << "unik" << endl;
+				cin >> schoolORuniversity;
+				human.set_educational_institution(schoolORuniversity);
+				cout << "book" << endl;
+				cin >> book;
+				human.set_book(book);
+				cout << "score" << endl;
+				cin >> score;
+				human.set_score(score);
+			}
+			else if (type == 3)
+			{
+				human.set_type(RETIRE);
+				cout << "name" << endl;
+				cin >> name;
+				human.set_name(name);
+				cout << "id" << endl;
+				cin >> id;
+				human.set_retire_id(id);
+				cout << "exp" << endl;
+				cin >> experience;
+				human.set_experience(experience);
+			}
+			else
+			{
+				cout << "invalid input " << endl;
+				continue;
+			}
+			humans.add(human, index);
+			break;
+		}
+		case 2:
+			cout << "index" << endl;
+			cin >> index;
+			humans.Del(index);
+			break;
+		case 3:
+			humans.Print();
+			break;
+		}
 
-        switch (choice) {
-        case 1:
-            system("cls");
-            cout << "Enter index: ";
-            std::cin >> index;
-            system("cls");
-            cout << "Choice type: " << endl;
-            cout << "1. Schooler" << endl;
-            cout << "2. Student" << endl;
-            cout << "3. Retire" << endl;
-            std::cin >> typeChoice;
-            if (typeChoice == 1)
-            {
-                system("cls");
-                human.set_type(SCHOOLER);
-                cout << "Enter name: " << endl;
-                std::cin >> name;
-                human.set_name(name);
-                system("cls");
-                cout << "Enter School " << endl;
-                std::cin >> schoolORuniversity;
-                human.set_educational_institution(schoolORuniversity);
-                system("cls");
-                cout << "Enter ticket" << endl;
-                std::cin >> ticket;
-                human.set_ticket(ticket);
-                system("cls");
-                cout << "From large family? " << endl;
-                std::cin >> family;
-                human.set_is_large_family(family);
-            }
-            if (typeChoice == 2)
-            {
-                system("cls");
-                human.set_type(STUDENT);
-                cout << "Enter name: " << endl;
-                std::cin >> name;
-                human.set_name(name);
-                system("cls");
-                cout << "Enter university " << endl;
-                std::cin >> schoolORuniversity;
-                human.set_educational_institution(schoolORuniversity);
-                system("cls");
-                cout << "Enter book" << endl;
-                std::cin >> book;
-                human.set_book(book);
-                system("cls");
-                cout << "Enter score" << endl;
-                std::cin >> score;
-                human.set_score(score);
-            }
-            if (typeChoice == 3)
-            {
-                system("cls");
-                human.set_type(RETIRE);
-                cout << "Enter name" << endl;
-                std::cin >> name;
-                human.set_name(name);
-                system("cls");
-                cout << "Enter ID" << endl;
-                std::cin >> id;
-                human.set_retire_id(id);
-                system("cls");
-                cout << "Enter experience" << endl;
-                std::cin >> experience;
-                human.set_experience(experience);
-            }
-            humans.insert(&human);
-            break;
-        case 2:
-            system("cls");
-            cout << "Enter index: ";
-            std::cin >> index;
-            humans.remove(index);
-            break;
-        case 3:
-            humans.print_list(2);
-            break;
-        case 4:
-            system("cls");
-           // double max = humans.search_max_payday(human, 5);
-            break;
-        case 5:
-            system("cls");
-            cout << "Exiting..." << endl;
-            break;
-        default:
-            system("cls");
-            cout << "Invalid choice" << endl;
-            break;
-        }
-    } while (choice != 5);
-
-    return 0;
+	}while(choice != 0);
+	return 0;
 }

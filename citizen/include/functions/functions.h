@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
+#define Human_ptr Human*
 
 namespace peoples 
 {
@@ -27,7 +28,7 @@ namespace peoples
 		int experience;
 	public:
 		// constructors & destructors:
-		Human(); // standard constructor
+		Human() {}; // standard constructor
 		Human(HumanType type, string name, string educational_institution, int ticket, int book, bool is_large_family, double score, int retire_id, int experience); // something class constructor
 		
 
@@ -60,6 +61,9 @@ namespace peoples
 		int get_retire_id();
 		int get_experience();
 
+
+		// operator
+
 		// methods:
 		void print_info();
 	};
@@ -67,19 +71,19 @@ namespace peoples
 	class HumanList
 	{
 	private:
-		Human** humans;
-		int capacity; // max size of array
-		int size; // current size of array
+		Human** _ptr;
+		int _size; // current size of array
 	public:
-
-		// constructors & destructor:
-		HumanList(); // standard constructor
-		~HumanList(); // destructor
-
-		// methods:
-		void insert(Human* human); // input element
-		void remove(int index); // delete element
-		void print_list(int size); // print list
-		double search_max_payday(Human** list, int size);
+		HumanList(): _size(0), _ptr(nullptr){}
+		HumanList(const HumanList& list);
+		void Swap(HumanList& cpy) noexcept;
+		HumanList& operator=(const HumanList& list);
+		Human& operator[](const int index);
+		void add(Human item);
+		void add(Human item, int index);
+		void Del(int index);
+		void clear() noexcept;
+		~HumanList();
+		void Print();
 	};
 }
