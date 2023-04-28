@@ -22,87 +22,107 @@ int main()
 	double score;
 	int id;
 	int experience;
+	double max;
 	do
 	{
-		cout << "Menu:" << endl;
-		cout << "0. EXIT" << endl;
-		cout << "1. input" << endl;
-		cout << "2. del" << endl;
-		cout << "3. print" << endl;
+		std::cout << endl;
+		std::cout << "Menu:" << endl;
+		std::cout << "0. EXIT" << endl;
+		std::cout << "1. Add element into array" << endl;
+		std::cout << "2. Delete element from array" << endl;
+		std::cout << "3. Print list" << endl;
+		std::cout << "4. Search max payday" << endl;
 		int choice;
-		cout << "what do7" << endl;
-		cin >> choice;
+		std::cin >> choice;
 		switch (choice)
 		{
 		case 1:
 		{
+			system("cls");
 			Human human;
-			cout << "index" << endl;
-			cin >> index;
-			cout << "choose type:" << endl;
-			cout << "1. schooler / 2. student / 3. retire" << endl;
-			cin >> type;
+			std::cout << "Enter index" << endl;
+			std::cin >> index;
+			system("cls");
+			std::cout << "Choose type: " << endl;
+			std::cout << "(Press 1 for schooler, 2 - for student, 3 - for retire)" << endl;
+			std::cin >> type;
+			system("cls");
 			if (type == 1)
 			{
 				human.set_type(SCHOOLER);
-				cout << "name" << endl;
-				cin >> name;
+				std::cout << "Enter name: " << endl;
+				std::cin >> name;
 				human.set_name(name);
-				cout << "school" << endl;
-				cin >> schoolORuniversity;
+				system("cls");
+				std::cout << "Enter school: " << endl;
+				std::cin >> schoolORuniversity;
 				human.set_educational_institution(schoolORuniversity);
-				cout << "ticket" << endl;
-				cin >> ticket;
+				system("cls");
+				std::cout << "Enter ticket: " << endl;
+				std::cin >> ticket;
 				human.set_ticket(ticket);
-				cout << "family" << endl;
-				cin >> family;
+				system("cls");
+				std::cout << "From large family?" << endl;
+				std::cout << "(0 - No, 1 - Yes)" << endl;
+				std::cin >> family;
 				human.set_is_large_family(family);
 			}
 			else if (type == 2)
 			{
 				human.set_type(STUDENT);
-				cout << "name" << endl;
-				cin >> name;
+				std::cout << "Enter name: " << endl;
+				std::cin >> name;
 				human.set_name(name);
-				cout << "unik" << endl;
-				cin >> schoolORuniversity;
+				system("cls");
+				std::cout << "Enter university: " << endl;
+				std::cin >> schoolORuniversity;
 				human.set_educational_institution(schoolORuniversity);
-				cout << "book" << endl;
-				cin >> book;
+				system("cls");
+				std::cout << "Enter book: " << endl;
+				std::cin >> book;
 				human.set_book(book);
-				cout << "score" << endl;
-				cin >> score;
+				system("cls");
+				std::cout << "Enter score: " << endl;
+				std::cin >> score;
 				human.set_score(score);
 			}
 			else if (type == 3)
 			{
 				human.set_type(RETIRE);
-				cout << "name" << endl;
-				cin >> name;
+				std::cout << "Enter name: " << endl;
+				std::cin >> name;
 				human.set_name(name);
-				cout << "id" << endl;
-				cin >> id;
+				system("cls");
+				std::cout << "Enter id: " << endl;
+				std::cin >> id;
 				human.set_retire_id(id);
-				cout << "exp" << endl;
-				cin >> experience;
+				system("cls");
+				std::cout << "Enter experience: " << endl;
+				std::cin >> experience;
 				human.set_experience(experience);
 			}
 			else
 			{
-				cout << "invalid input " << endl;
+				std::cout << "Invalid input" << endl;
 				continue;
 			}
 			humans.add(human, index);
 			break;
 		}
 		case 2:
-			cout << "index" << endl;
-			cin >> index;
+			system("cls");
+			std::cout << "Enter index: " << endl;
+			std::cin >> index;
 			humans.Del(index);
 			break;
 		case 3:
+			system("cls");
 			humans.Print();
 			break;
+		case 4:
+			system("cls");
+			max = humans.max_payday();
+			cout << "Max payday is: " << max;
 		}
 
 	}while(choice != 0);

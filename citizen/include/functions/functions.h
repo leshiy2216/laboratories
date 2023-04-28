@@ -85,5 +85,6 @@ namespace peoples
 		void clear() noexcept;
 		~HumanList();
 		void Print();
+		double max_payday() const;
 	};
 }

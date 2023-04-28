@@ -278,28 +278,51 @@ void HumanList::Print()
 {
 	for (int i = 0; i < _size; i++)
 	{
+		cout << endl;
+		cout << "Human " << i + 1 << endl;
 		if (_ptr[i]->get_type() == SCHOOLER)
 		{
-			cout << "schooler" << endl;
-			cout << "name: " << _ptr[i]->get_name() << endl;
-			cout << "shool " << _ptr[i]->get_educational_institution() << endl;
-			cout << "ticket " << _ptr[i]->get_ticket() << endl;
-			cout << "family " << _ptr[i]->get_is_large_family() << endl;
+			cout << endl;
+			cout << "Type: schooler" << endl;
+			cout << "Name: " << _ptr[i]->get_name() << endl;
+			cout << "School: " << _ptr[i]->get_educational_institution() << endl;
+			cout << "Ticket: " << _ptr[i]->get_ticket() << endl;
+			//cout << "family " << _ptr[i]->get_is_large_family() << endl;
+			if (_ptr[i]->get_is_large_family() == 1) cout << "From large family" << endl;
+			else cout << "Not large family" << endl;
+			cout << "Payday: " << _ptr[i]->payday_for_schooler() << endl;
 		}
 		if (_ptr[i]->get_type() == STUDENT)
 		{
-			cout << "student" << endl;
-			cout << "name: " << _ptr[i]->get_name() << endl;
-			cout << "university " << _ptr[i]->get_educational_institution() << endl;
-			cout << "book " << _ptr[i]->get_book() << endl;
-			cout << "score " << _ptr[i]->get_score() << endl;
+			cout << endl;
+			cout << "Type: student" << endl;
+			cout << "Name: " << _ptr[i]->get_name() << endl;
+			cout << "University: " << _ptr[i]->get_educational_institution() << endl;
+			cout << "Book: " << _ptr[i]->get_book() << endl;
+			cout << "Score: " << _ptr[i]->get_score() << endl;
+			cout << "Payday: " << _ptr[i]->payday_for_student() << endl;
 		}
 		if (_ptr[i]->get_type() == RETIRE)
 		{
-			cout << "retire" << endl;
-			cout << "name: " << _ptr[i]->get_name() << endl;
-			cout << "id " << _ptr[i]->get_retire_id() << endl;
-			cout << "exp " << _ptr[i]->get_experience() << endl;
+			cout << endl;
+			cout << "Type: retire" << endl;
+			cout << "Name: " << _ptr[i]->get_name() << endl;
+			cout << "ID: " << _ptr[i]->get_retire_id() << endl;
+			cout << "Experience: " << _ptr[i]->get_experience() << endl;
+			cout << "Payday: " << _ptr[i]->payday_for_retire() << endl;
 		}
 	}
+}
+
+double HumanList::max_payday() const
+{
+	double max = 0;
+	for (int i = 0; i < _size; i++)
+	{
+		if (_ptr[i]->payday_for_all(_ptr[i]->get_type()) > max)
+		{
+			max = _ptr[i]->payday_for_all(_ptr[i]->get_type());
+		}
+	}
+	return max;
 }
