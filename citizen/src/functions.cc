@@ -10,8 +10,125 @@
 using namespace std;
 using namespace peoples;
 
-// set & get:
+void Human::set_name(const string& name)
+{
+	this->name = name;
+}
 
+const string& Human::get_name() const
+{
+	return name;
+}
+
+void Schooler::set_educational_institution(const string& educational_institution)
+{
+	this->educational_institution = educational_institution;
+}
+
+void Schooler::set_ticket(int ticket)
+{
+	this->ticket = ticket;
+}
+
+void Schooler::set_is_large_family(bool is_large_family)
+{
+	this->is_large_family = is_large_family;
+}
+
+int Schooler::get_ticket() const
+{
+	return ticket;
+}
+
+bool Schooler::get_is_large_family() const
+{
+	return is_large_family;
+}
+
+const string& Schooler::get_educational_institution() const
+{
+	return educational_institution;
+}
+
+unique_ptr<Human>Schooler::clone() const
+{
+	return make_unique<Schooler>(*this);
+}
+
+void Schooler::print(ostream& stream) const
+{
+	stream << "Schooler: " << name << ", Educational Institution: " << educational_institution << ", Ticket: " << ticket << ", Large Family: " << is_large_family << endl;
+}
+
+unique_ptr<Human>Student::clone() const
+{
+	return make_unique<Student>(*this);
+}
+
+void Student::print(ostream& stream) const
+{
+	stream << "Student: " << name << ", Educational Institution: " << educational_institution << ", Book: " << book << ", Score: " << score << endl;
+}
+
+void Student::set_educational_institution(const string& educational_institution) 
+{
+	this->educational_institution = educational_institution;
+}
+
+void Student::set_book(int book) 
+{
+	this->book = book;
+}
+
+void Student::set_score(double score)
+{
+	this->score = score;
+}
+
+const string&Student::get_educational_institution() const 
+{
+	return educational_institution;
+}
+
+int Student::get_book() const 
+{
+	return book;
+}
+
+double Student::get_score() const 
+{
+	return score;
+}
+
+unique_ptr<Human>Retire::clone() const
+{
+	return make_unique<Retire>(*this);
+}
+
+void Retire::print(ostream& stream) const
+{
+	stream << "Retire: " << name << ", Retire ID: " << retire_id << ", Experience: " << experience << endl;
+}
+
+void Retire::set_retire_id(int retire_id) 
+{
+	this->retire_id = retire_id;
+}
+void Retire::set_experience(int experience)
+{
+	this->experience = experience;
+}
+
+int Retire::get_retire_id() const 
+{
+	return retire_id;
+}
+int Retire::get_experience() const
+{
+	return experience;
+}
+// set & get:
+/*
 void Human::set_type(HumanType type)
 {
 	this->type = type;
@@ -174,8 +291,8 @@ double Human::payday_for_all(HumanType type)
 	}
 }
 
-// operators::
-
+*/
+/*
 // 2nd class
 
 Human& HumanList::operator[](const int index)
@@ -325,4 +442,4 @@ double HumanList::max_payday() const
 		}
 	}
 	return max;
-}
+}*/
