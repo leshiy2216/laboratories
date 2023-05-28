@@ -2,129 +2,167 @@
 #include <functions/functions.h>
 #include <conio.h>
 #include <list>
+#include <memory>
 #include <vector>
 using namespace std;
 using namespace peoples;
 
 
-int main()
+void printMenu() 
 {
-	HumanList humans;
-	int choice = -1;
-	int type;
-	int index;
-	Human human;
-	string name;
-	string schoolORuniversity;
-	int ticket;
-	bool family;
-	int book;
-	double score;
-	int id;
-	int experience;
-	double max;
-	do
-	{
-		std::cout << endl;
-		std::cout << "Menu:" << endl;
-		std::cout << "0. EXIT" << endl;
-		std::cout << "1. Add element into array" << endl;
-		std::cout << "2. Delete element from array" << endl;
-		std::cout << "3. Print list" << endl;
-		std::cout << "4. Search max payday" << endl;
-		int choice;
-		std::cin >> choice;
-		switch (choice)
-		{
-		case 1:
-		{
-			system("cls");
-			Human human;
-			std::cout << "Enter index" << endl;
-			std::cin >> index;
-			system("cls");
-			std::cout << "Choose type: " << endl;
-			std::cout << "(Press 1 for schooler, 2 - for student, 3 - for retire)" << endl;
-			std::cin >> type;
-			system("cls");
-			if (type == 1)
-			{
-				human.set_type(SCHOOLER);
-				std::cout << "Enter name: " << endl;
-				std::cin >> name;
-				human.set_name(name);
-				system("cls");
-				std::cout << "Enter school: " << endl;
-				std::cin >> schoolORuniversity;
-				human.set_educational_institution(schoolORuniversity);
-				system("cls");
-				std::cout << "Enter ticket: " << endl;
-				std::cin >> ticket;
-				human.set_ticket(ticket);
-				system("cls");
-				std::cout << "From large family?" << endl;
-				std::cout << "(0 - No, 1 - Yes)" << endl;
-				std::cin >> family;
-				human.set_is_large_family(family);
-			}
-			else if (type == 2)
-			{
-				human.set_type(STUDENT);
-				std::cout << "Enter name: " << endl;
-				std::cin >> name;
-				human.set_name(name);
-				system("cls");
-				std::cout << "Enter university: " << endl;
-				std::cin >> schoolORuniversity;
-				human.set_educational_institution(schoolORuniversity);
-				system("cls");
-				std::cout << "Enter book: " << endl;
-				std::cin >> book;
-				human.set_book(book);
-				system("cls");
-				std::cout << "Enter score: " << endl;
-				std::cin >> score;
-				human.set_score(score);
-			}
-			else if (type == 3)
-			{
-				human.set_type(RETIRE);
-				std::cout << "Enter name: " << endl;
-				std::cin >> name;
-				human.set_name(name);
-				system("cls");
-				std::cout << "Enter id: " << endl;
-				std::cin >> id;
-				human.set_retire_id(id);
-				system("cls");
-				std::cout << "Enter experience: " << endl;
-				std::cin >> experience;
-				human.set_experience(experience);
-			}
-			else
-			{
-				std::cout << "Invalid input" << endl;
-				continue;
-			}
-			humans.add(human, index);
-			break;
-		}
-		case 2:
-			system("cls");
-			std::cout << "Enter index: " << endl;
-			std::cin >> index;
-			humans.Del(index);
-			break;
-		case 3:
-			system("cls");
-			humans.Print();
-			break;
-		case 4:
-			system("cls");
-			max = humans.max_payday();
-			cout << "Max payday is: " << max;
-		}
+    cout << "Menu:\n"
+        << "1. Add element to the array by index\n"
+        << "2. Remove element from the array by index\n"
+        << "3. Print the array\n"
+        << "4. Exit\n";
+}
 
-	}while(choice != 0);
-	return 0;
+int main() 
+{
+    HumanList humanList;
+
+    while (true) 
+    {
+        cout << endl;
+        printMenu();
+        int choice;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) 
+        {
+        case 1: 
+        {
+            system("cls");
+            cout << "Enter the type of human (0 - Schooler, 1 - Student, 2 - Retire): ";
+            int type;
+            cin >> type;
+
+            string name;
+            cout << "Enter the name: ";
+            cin.ignore();
+            getline(cin, name);
+
+            switch (type) 
+            {
+            case 0: 
+            {
+                string educational_institution;
+                int ticket;
+                bool is_large_family;
+
+                cout << "Enter the educational institution: ";
+                getline(cin, educational_institution);
+                cout << "Enter the ticket number: ";
+                cin >> ticket;
+                cout << "Is it from a large family? (0 - No, 1 - Yes): ";
+                cin >> is_large_family;
+
+                HumanPtr human = make_shared<Schooler>(name, educational_institution, ticket, is_large_family);
+                humanList.insert(humanList.size(), human);
+
+                system("cls");
+                cout << "Schooler added to the array.\n";
+                break;
+            }
+            case 1: 
+            {
+                string educational_institution;
+                int book;
+                double score;
+
+                cout << "Enter the educational institution: ";
+                getline(cin, educational_institution);
+                cout << "Enter the book number: ";
+                cin >> book;
+                cout << "Enter the score: ";
+                cin >> score;
+
+                HumanPtr human = make_shared<Student>(name, educational_institution, book, score);
+                humanList.insert(humanList.size(), human);
+
+                system("cls");
+                cout << "Student added to the array.\n";
+                break;
+            }
+            case 2: 
+            {
+                int id;
+                int experience;
+
+                cout << "Enter the ID: ";
+                cin >> id;
+                cout << "Enter the experience: ";
+                cin >> experience;
+
+                HumanPtr human = make_shared<Retire>(name, id, experience);
+                humanList.insert(humanList.size(), human);
+
+                system("cls");
+                cout << "Retire added to the array.\n";
+                break;
+            }
+            default:
+                cout << "Invalid choice. Please try again.\n";
+                break;
+            }
+
+            break;
+        }
+        case 2: 
+        {
+            if (humanList.size() == 0) 
+            {
+                system("cls");
+                cout << "The array is empty.\n";
+                break;
+            }
+
+            system("cls");
+            cout << "Enter the index of the element to remove: ";
+            int index;
+            cin >> index;
+
+            try 
+            {
+                humanList.remove(index);
+                system("cls");
+                cout << "Element removed from the array.\n";
+            }
+            catch (const exception& e) 
+            {
+                system("cls");
+                cout << "Invalid index. Please try again.\n";
+            }
+
+            break;
+        }
+        case 3: 
+        {
+            if (humanList.size() == 0) 
+            {
+                system("cls");
+                cout << "The array is empty.\n";
+                break;
+            }
+
+            system("cls");
+            cout << "Printing the array:\n" << endl;
+            for (int i = 0; i < humanList.size(); ++i) 
+            {
+                cout << "Human " << i << ":\n";
+                humanList[i]->print(cout);
+                cout << endl;
+            }
+
+            break;
+        }
+        case 4:
+            cout << "Exiting the program.\n";
+            return 0;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+            break;
+        }
+    }
 }
