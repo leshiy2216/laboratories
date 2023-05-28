@@ -5,34 +5,95 @@
 using namespace std;
 using namespace peoples;
 
-// Тест функции payday() класса Schooler
-TEST(HumanTest, SchoolerPayday) {
-    Schooler schooler("John", "ABC School", 123, true);
-    double payday = schooler.payday(true, 4.5, 10);
-    EXPECT_EQ(payday, 0.6 * MINSIZE);
+
+// Add element to array #1
+TEST(HumanListTest, InsertElement) 
+{
+	HumanList list;
+	HumanPtr human = make_shared<Schooler>("Vasiliy", "School of Science", 123, false);
+
+	list.insert(0, human);
+
+	ASSERT_EQ(list.size(), 1);
+	ASSERT_EQ(list[0]->get_name(), "Vasiliy");
 }
 
-// Тест функции payday() класса Student
-TEST(HumanTest, StudentPayday) {
-    Student student("Alice", "XYZ University", 456, 4.2);
-    double payday = student.payday(false, 4.2, 5);
-    EXPECT_EQ(payday, 0.6 * MINSIZE);
+
+// Delete element from array #2
+TEST(HumanListTest, RemoveElement) 
+{
+	HumanList list;
+	HumanPtr human1 = make_shared<Schooler>("Andrey", "School of Society", 123, false);
+	HumanPtr human2 = make_shared<Student>("Maksim", "University", 456, 4.5);
+
+	list.insert(0, human1);
+	list.insert(1, human2);
+
+	list.remove(0);
+
+	ASSERT_EQ(list.size(), 1);
+	ASSERT_EQ(list[0]->get_name(), "Maksim");
 }
 
-// Тест функции payday() класса Retire
-TEST(HumanTest, RetirePayday) {
-    Retire retiree("Bob", 789, 15);
-    double payday = retiree.payday(false, 4.8, 15);
-    EXPECT_EQ(payday, 3 * MINSIZE);
+
+// Calculation payday for Schooler #3
+TEST(HumanTest, SchoolerPayday) 
+{
+	HumanPtr human = make_shared<Schooler>("Maksim", "High School", 123, true);
+	double payday = human->payday(true, 0, 0);
+
+	ASSERT_EQ(payday, 8121);
 }
 
-// Тест функции max_payday() класса HumanList
-TEST(HumanListTest, MaxPayday) {
-    HumanList humanList;
-    humanList.insert(0, make_shared<Schooler>("John", "ABC School", 123, true));
-    humanList.insert(1, make_shared<Student>("Alice", "XYZ University", 456, 4.2));
-    humanList.insert(2, make_shared<Retire>("Bob", 789, 15));
 
-    double maxPayday = humanList.max_payday(true, 4.2, 10);
-    EXPECT_EQ(maxPayday, 0.6 * MINSIZE);
+// Calculation payday for Student #4
+TEST(HumanTest, StudentPayday) 
+{
+	HumanPtr human = make_shared<Student>("Daniil", "University", 456, 4.2);
+	double payday = human->payday(false, 4.2, 0);
+
+	ASSERT_DOUBLE_EQ(payday, 9745.2);
+}
+
+
+// Calculation payday for Retire #5
+TEST(HumanTest, RetirePayday) 
+{
+	HumanPtr human = make_shared<Retire>("Evgeniy", 789, 15);
+	double payday = human->payday(false, 0, 15);
+
+	ASSERT_EQ(payday, 48726);
+}
+
+// Check size #6
+TEST(HumanListTest, Size) 
+{
+	HumanList list;
+	HumanPtr human1 = make_shared<Schooler>("Andrey", "School of Society", 123, false);
+	HumanPtr human2 = make_shared<Student>("Maksim", "University", 456, 4.5);
+
+	list.insert(0, human1);
+	list.insert(1, human2);
+
+	int size = list.size();
+
+	ASSERT_EQ(size, 2);
+}
+
+
+// Check swap #7
+TEST(HumanListTest, Swap) 
+{
+	HumanList list1;
+	HumanList list2;
+	HumanPtr human1 = make_shared<Schooler>("Andrey", "School of Society", 123, false);
+	HumanPtr human2 = make_shared<Student>("Maksim", "University", 456, 4.5);
+
+	list1.insert(0, human1);
+	list2.insert(0, human2);
+
+	list1.swap(list2);
+
+	ASSERT_EQ(list1[0]->get_name(), "Maksim");
+	ASSERT_EQ(list2[0]->get_name(), "Andrey");
 }
